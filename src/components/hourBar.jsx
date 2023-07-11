@@ -1,16 +1,8 @@
 /* eslint-disable prettier/prettier */
-/* eslint-disable no-unused-vars */
 import React from 'react';
-import {PropsWithChildren} from 'react';
 import {
   Dimensions,
-  SafeAreaView,
   ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
 } from 'react-native';
 import Hour from './hour';
 
@@ -18,8 +10,8 @@ function HourBar() {
     return (
         <ScrollView horizontal={true} style={styles.container}>
 
-          {[...Array(24)].map((x, i) =>
-              <Hour key={i} styles={styles.item}/>
+          {[...Array(12)].map((x, i) =>
+              <Hour key={i} styles={styles.item} index={i}/>
             )}
 
         </ScrollView>

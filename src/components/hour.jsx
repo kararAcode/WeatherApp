@@ -1,26 +1,34 @@
 /* eslint-disable prettier/prettier */
-/* eslint-disable no-unused-vars */
-import React from 'react';
-import {PropsWithChildren} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  Dimensions,
   Image,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
   Text,
-  useColorScheme,
   View,
 } from 'react-native';
 
 
-function Hour() {
+function Hour(props) {
+    const [hour, setHour] = useState(0);
+    const [icon, setIcon] = useState('');
+    const [temp, setTemp] = useState(0);
+
+
+    useEffect(() => {
+        fetch(`{machine_ip}:8080/hourly?index=${props.index}`)
+            .then((res) => res.json())
+            .then((json) => {
+                setHour(json.hour);
+                setIcon(json.icon);
+                setTemp(json.temp);
+            });
+    });
+
+
     return (
         <View style={styles.container}>
-            <Text style={styles.baseText}>11:00</Text>
+            <Text style={styles.baseText}>{hour}</Text>
             <Image style={styles.icon} source={{uri: 'https://cdn.icon-icons.com/icons2/2791/PNG/512/partly_cloudy_day_sun_clouds_weather_icon_177560.png'}} />
-            <Text style={styles.baseText}>18</Text>
+            <Text style={styles.baseText}>{temp}</Text>
         </View>
     );
 }
