@@ -27,7 +27,7 @@ function Day(props) {
     return (
         <View style={styles.container}>
             <Text style={styles.baseText}>{date}</Text>
-            <Image style={styles.icon} source={{uri: 'https://cdn.icon-icons.com/icons2/2791/PNG/512/partly_cloudy_day_sun_clouds_weather_icon_177560.png'}} />
+            <Image style={styles.icon} source={{uri: `https://developer.accuweather.com/sites/default/files/${icon}-s.png`}} />
             <Text style={styles.baseText}>{high}/{low}</Text>
         </View>
     );
