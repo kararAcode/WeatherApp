@@ -28,7 +28,7 @@ app.post('/daily', async (req, res) => {
             weatherData.date = json.data.DailyForecasts[index + 1].Date.slice(5, 10);
         });
 
-    res.json(weatherData);
+    res.json(weatherData)
 });
 
 app.post('/hourly', async (req, res) => {
@@ -62,7 +62,7 @@ app.post('/current', async (req, res) => {
     };
 
     await axios.get(`http://dataservice.accuweather.com/forecasts/v1/daily/1day/${process.env.locationKey}?apikey=${process.env.APIKEY}&metric=true`)
-        .then((json) => {
+        .then((json) => {2
             weatherData.high = Math.round(json.data.DailyForecasts[0].Temperature.Maximum.Value);
             weatherData.low = Math.round(json.data.DailyForecasts[0].Temperature.Minimum.Value);
 

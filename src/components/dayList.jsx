@@ -4,7 +4,7 @@ import {
   Dimensions,
   View,
 } from 'react-native';
-import Day from './day';
+import Day from './Day';
 
 function DayList() {
     return (

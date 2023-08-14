@@ -4,7 +4,7 @@ import {
   Dimensions,
   ScrollView,
 } from 'react-native';
-import Hour from './hour';
+import Hour from './Hour';
 
 function HourBar() {
     return (

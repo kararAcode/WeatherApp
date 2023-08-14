@@ -16,17 +16,17 @@ function HeroSection() {
   const [high, setHigh] = useState(0);
   const [low, setLow] = useState(0);
 
-  useEffect(() => {
-    fetch('{machine_ip}:8080/current')
-      .then((res) => res.json())
-      .then((json) => {
-        setTitle(json.city);
-        setTemp(json.temp);
-        setCondition(json.condition);
-        setHigh(json.high);
-        setLow(json.low);
-      });
-  });
+//   useEffect(() => {
+//     fetch('{machine_ip}:8080/current')
+//       .then((res) => res.json())
+//       .then((json) => {
+//         setTitle(json.city);
+//         setTemp(json.temp);
+//         setCondition(json.condition);
+//         setHigh(json.high);
+//         setLow(json.low);
+//       });
+//   }, []);
 
 
   return (
