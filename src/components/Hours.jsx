@@ -24,7 +24,7 @@ const styles = {
   container: {
 
     width: Dimensions.get('screen').width * 0.9,
-    maxWidth: "400px",
+    maxWidth: 400,
     margin: 'auto',
        // minWidth: Dimensions.get('screen').width * 0.9,
     marginTop: 40,

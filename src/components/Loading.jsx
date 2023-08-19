@@ -1,14 +1,16 @@
 import React from "react";
-import  {LinearGradient}  from "expo-linear-gradient";
-import { Image, ProgressBar, View}  from "react-native";
+import { StyleSheet, View, Image, Dimensions } from 'react-native';
+import {ProgressBar} from 'react-native-paper'
+import { LinearGradient } from 'expo-linear-gradient';
 
 
-function Loading() {
+
+function Loading(props) {
     return (
         <LinearGradient colors={['#000b18', '#0052a2']} style={styles.background}>
             <View style={styles.container}>
                 <Image style={styles.icon} source={{uri: `http://openweathermap.org/img/wn/02d@2x.png`}} />
-                <ProgressBar style={styles.progressbar} indeterminate trackColor="#68aee7"/>
+                <ProgressBar style={styles.progressbar} indeterminate color="#68aee7"/>
             </View>
             
 
@@ -17,7 +19,7 @@ function Loading() {
 }
 
 
-const styles = {
+const styles = StyleSheet.create({
     icon: {
         width: 250,
         height: 250,
@@ -26,12 +28,12 @@ const styles = {
     background: {
         alignItems: 'center',
         justifiyContent: 'center',
-        width: "100%",
+        flex:1,
+        width: '100%'
     },
 
     container: {
-        marginTop: '12rem',
-
+        marginTop: Dimensions.get('window').height* 0.25,
         
     },
     
@@ -43,6 +45,6 @@ const styles = {
     baseText: {
         color: 'white',
     },
-};
+});
 
 export default Loading;

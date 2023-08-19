@@ -23,7 +23,7 @@ const styles = {
 
       width: Dimensions.get('screen').width * 0.9,
       margin: 'auto',
-      maxWidth: "400px",
+      maxWidth: 400,
       marginTop: 20,
       backgroundColor: 'rgba(0, 0, 0, 0.1)',
       borderRadius: 10,

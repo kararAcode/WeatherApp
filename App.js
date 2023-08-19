@@ -13,11 +13,13 @@ function App() {
   useEffect(() => {
 
     (async () => {
-      let { status } = await Location.getBackgroundPermissionsAsync();
-      let foundLocation = await Location.getCurrentPositionAsync({});
-
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      let foundLocation = await Location.getCurrentPositionAsync();
+      
+      
+      
       setTimeout(() => {
-        fetch(`http://localhost:8080/current`, {
+        fetch(`http://172.16.1.63:19001/current`, {
           method: 'POST',
           headers: {
             'Accept': 'application/json',
@@ -27,6 +29,7 @@ function App() {
           body: JSON.stringify({
             lat: foundLocation.coords.latitude,
             lon: foundLocation.coords.longitude
+     
             
           })
         })
@@ -35,7 +38,7 @@ function App() {
     
           setWeatherData(json);
         });
-      }, 1000)
+      }, 3000)
     })();
 
     
@@ -49,11 +52,12 @@ function App() {
   return (
     
     <>
-      {Object.keys(weatherData).length !== 0 && <Weather data={weatherData}/>}
-      {Object.keys(weatherData).length === 0 && <Loading/>}
+      {Object.keys(weatherData).length !== 0 ? <Weather data={weatherData}/> : <Loading/>}
     </>
   );
 }
+
+
 
 
 
