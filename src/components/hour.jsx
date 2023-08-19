@@ -8,27 +8,12 @@ import {
 
 
 function Hour(props) {
-    const [hour, setHour] = useState(0);
-    const [icon, setIcon] = useState('');
-    const [temp, setTemp] = useState(0);
-
-
-    useEffect(() => {
-        fetch(`{machine_ip}:8080/hourly?index=${props.index}`)
-            .then((res) => res.json())
-            .then((json) => {
-                setHour(json.hour);
-                setIcon(json.icon);
-                setTemp(json.temp);
-            });
-    });
-
 
     return (
         <View style={styles.container}>
-            <Text style={styles.baseText}>{hour}</Text>
-            <Image style={styles.icon} source={{uri: `https://developer.accuweather.com/sites/default/files/${icon}-s.png`}} />
-            <Text style={styles.baseText}>{temp}</Text>
+            <Text style={styles.baseText}>{props.time}</Text>
+            <Image style={styles.icon} source={{uri: `https://openweathermap.org/img/wn/${props.icon}.png`}} />
+            <Text style={styles.baseText}>{props.temp}</Text>
         </View>
     );
 }

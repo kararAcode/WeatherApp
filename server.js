@@ -3,88 +3,63 @@ const express = require('express');
 const app = express();
 const axios = require('axios');
 const bodyParser = require('body-parser');
+const cors =require('cors')
 
 require('dotenv').config({ path: require('find-config')('.env') });
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cors());
 
 
-app.post('/daily', async (req, res) => {
-
-    let index = req.body.index;
-    let weatherData = {
-        high: '',
-        low: '',
-        icon: '',
-        date: '',
-    };
-
-    await axios.get(`http://dataservice.accuweather.com/forecasts/v1/daily/5day/${process.env.locationKey}?apikey=${process.env.APIKEY}&metric=true`)
-        .then((json) => {
-            weatherData.high = Math.round(json.data.DailyForecasts[index + 1].Temperature.Maximum.Value);
-            weatherData.low = Math.round(json.data.DailyForecasts[index + 1].Temperature.Minimum.Value);
-            weatherData.icon = json.data.DailyForecasts[index + 1].Day.Icon;
-            weatherData.date = json.data.DailyForecasts[index + 1].Date.slice(5, 10);
-        });
-
-    res.json(weatherData)
-});
-
-app.post('/hourly', async (req, res) => {
-
-    let index = req.body.index;
-
-    let weatherData = {
-        hour: '',
-        icon: '',
-        temp: '',
-    };
-
-    await axios.get(`http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/${process.env.locationKey}?apikey=${process.env.APIKEY}&metric=true`)
-        .then((json) => {
-            weatherData.hour = json.data[index].DateTime.slice(11, 16);
-            weatherData.icon = json.data[index].WeatherIcon;
-            weatherData.temp = Math.round(json.data[req.body.index].Temperature.Value);
-        });
-
-
-    res.json(weatherData);
-});
 
 app.post('/current', async (req, res) => {
-    let weatherData = {
-        high: '',
-        low: '',
-        condition: '',
-        temp: '',
-        city: '',
-    };
+        const cityName = await axios.get(`http://api.openweathermap.org/geo/1.0/reverse?lat=${process.env.lat}&lon=${process.env.lon}&limit=1&appid=${process.env.APIKEY}`)
+        .then(json => json.data[0].name);
+        
+    
+        await axios.get(`https://api.openweathermap.org/data/3.0/onecall?lat=${process.env.lat}&lon=${process.env.lon}&exclude=minutely,alerts&appid=${process.env.APIKEY}&units=metric`)
+            .then((json) => {
+                const currentData = {
+                    high: Math.round(json.data.daily[0].temp.max),
+                    low: Math.round(json.data.daily[0].temp.min),
+                    temp: Math.round(json.data.current.temp),
+                    condition: json.data.current.weather[0].description,
+                    city: cityName
+                }
+    
+                const hourlyData = json.data.hourly.map((hour) => {
+                    let date = new Date(hour.dt*1000);
+                    return {
+                        time: date.getHours() + ":00",
+                        icon: hour.weather[0].icon,
+                        temp: Math.round(hour.temp)
+                    }
+                });
+                
+                let dailyData = json.data.daily.map((day) => {
+                    let date = new Date(day.dt*1000);
+                    return {
+                        date: date.toLocaleDateString().slice(date.toLocaleDateString().length - 4),
+                        icon: day.weather[0].icon,
+                        high: Math.round(day.temp.max),
+                        low: Math.round(day.temp.min),                
+                    }
+                });
+                
+                res.json({
+                    current: currentData,
+                    daily: dailyData,
+                    hourly: hourlyData
+                });
+    
+               
+            });
+ 
 
-    await axios.get(`http://dataservice.accuweather.com/forecasts/v1/daily/1day/${process.env.locationKey}?apikey=${process.env.APIKEY}&metric=true`)
-        .then((json) => {2
-            weatherData.high = Math.round(json.data.DailyForecasts[0].Temperature.Maximum.Value);
-            weatherData.low = Math.round(json.data.DailyForecasts[0].Temperature.Minimum.Value);
-
-        });
-
-    await axios.get(`http://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=${process.env.APIKEY}&q=${process.env.lat}%2C-${process.env.lon}`)
-        .then((json) => {
-            weatherData.city = json.data.ParentCity.EnglishName;
-        });
-
-    await axios.get(`http://dataservice.accuweather.com/currentconditions/v1/${process.env.locationKey}?apikey=${process.env.APIKEY}`)
-        .then((json) => {
-            weatherData.condition = json.data[0].WeatherText;
-            weatherData.temp = Math.round(json.data[0].Temperature.Metric.Value);
-        });
+    
 
 
-
-
-
-
-    res.json(weatherData);
 });
 app.listen(8080, () => {
   console.log('SERVER HAS STARTED');

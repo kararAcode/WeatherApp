@@ -9,32 +9,16 @@ import {
 
 
 
-function HeroSection() {
-  const [title, setTitle] = useState(0);
-  const [temp, setTemp] = useState(0);
-  const [condition, setCondition] = useState(0);
-  const [high, setHigh] = useState(0);
-  const [low, setLow] = useState(0);
-
-//   useEffect(() => {
-//     fetch('{machine_ip}:8080/current')
-//       .then((res) => res.json())
-//       .then((json) => {
-//         setTitle(json.city);
-//         setTemp(json.temp);
-//         setCondition(json.condition);
-//         setHigh(json.high);
-//         setLow(json.low);
-//       });
-//   }, []);
+function HeroSection(props) {
+ 
 
 
   return (
     <View style={styles.container}>
-      <Text style={[styles.baseText, styles.title]}>{title}</Text>
-      <Text style={[styles.baseText, styles.degrees]}>{temp}</Text>
-      <Text style={[styles.baseText, styles.highLow]}>{high}/{low}</Text>
-      <Text style={[styles.baseText, styles.highLow]}>{condition}</Text>
+      <Text style={[styles.baseText, styles.title]}>{props.data.city}</Text>
+      <Text style={[styles.baseText, styles.degrees]}>{props.data.temp}</Text>
+      <Text style={[styles.baseText, styles.highLow]}>{props.data.high}/{props.data.low}</Text>
+      <Text style={[styles.baseText, styles.highLow]}>{props.data.condition}</Text>
     </View>
   );
 }

@@ -6,11 +6,13 @@ import {
 } from 'react-native';
 import Day from './Day';
 
-function DayList() {
+function DayList(props) {
     return (
         <View style={styles.container}>
-            {[...Array(4)].map((x, i) =>
-              <Day key={i} index={i}/>
+            {props.data.map((day, i) => {
+              return <Day key={i} index={i} date={day.date} icon={day.icon} high={day.high} low={day.low}/>
+
+            }
             )}
         </View>
     );
@@ -20,14 +22,18 @@ const styles = {
     container: {
 
       width: Dimensions.get('screen').width * 0.9,
-
-      marginTop: 40,
+      margin: 'auto',
+      maxWidth: "400px",
+      marginTop: 20,
       backgroundColor: 'rgba(0, 0, 0, 0.1)',
       borderRadius: 10,
       padding: 20,
       marginBottom: 20,
 
+      
+
     },
+    
 
 
   };

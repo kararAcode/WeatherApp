@@ -1,27 +1,41 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import HeroSection from './src/components/HeroSection';
-import { LinearGradient } from 'expo-linear-gradient';
-import HourBar from './src/components/HourBar';
-import DayList from './src/components/DayList';
+import { useEffect, useState } from 'react';
+import Weather from './src/components/Weather';
+import Loading from './src/components/Loading';
 
 function App() {
+  const [weatherData, setWeatherData] = useState({});
+
+  
+
+  useEffect(() => {
+    setTimeout(() => {
+      fetch("http://localhost:8080/current", {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+      })
+      .then((res) => res.json())
+      .then((json) => {
+  
+        setWeatherData(json);
+      });
+    }, 3000)
+    
+
+
+  }, []);
+
   return (
-    <LinearGradient colors={['#048fff', '#88f7f9']} style={styles.container}>
-      <View>
-        <HeroSection />
-        <HourBar />
-        <DayList />
-      </View>
-    </LinearGradient>
+    
+    <>
+      {Object.keys(weatherData).length !== 0 && <Weather data={weatherData}/>}
+      {Object.keys(weatherData).length === 0 && <Loading/>}
+    </>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-  },
-});
+
 
 export default App;
